@@ -8,14 +8,14 @@ If you like it, please consider giving it a :star:
 
 ###### Install
 
-`go get github.com/felixstrobel/mailtm`
+`go get github.com/nanaban/mailtm`
 
 ###### Documentation
 
 Firstly, create an `MailClient` object. This is the object that communicates with the API and contains all important
 information.
 ```go
-import "github.com/felixstrobel/mailtm"
+import "github.com/nanaban/mailtm"
 
 func main() {
     client, err := mailtm.NewMailClient()

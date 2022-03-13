@@ -1,4 +1,4 @@
-module github.com/felixstrobel/mailtm
+module github.com/nanaban/mailtm
 
 go 1.17
 
