@@ -69,6 +69,49 @@ func (c *MailClient) CreateAccount() (*Account, error) {
 	return &account, nil
 }
 
+func (c *MailClient) CreateAccountByName(mailName string) (*Account, error) {
+	var account Account
+	var password, err = RandomString(16)
+	if err != nil {
+		return nil, err
+	}
+
+	address := mailName + "@" + c.Domain.Path
+
+	reqBody, err := json.Marshal(map[string]string{
+		"address":  address,
+		"password": password,
+	})
+
+	req, err := http.NewRequest("POST", c.Service.Url+"/accounts", bytes.NewBuffer(reqBody))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+	res, err := c.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &account)
+	if err != nil {
+		return nil, err
+	}
+
+	account.Address = address
+	account.Password = password
+	c.Account = account
+
+	return &account, nil
+}
+
 func (c *MailClient) GetAccountByID(id string) (*Account, error) {
 	var account Account
 
